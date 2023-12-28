@@ -21,6 +21,7 @@ const DesignationRoutes = require("./routes/designation/designationRoute");
 const TasksGivenRoutes = require("./routes/TasksGiven/TasksGivenRoute");
 const attendenceRoute = require("./routes/attendence/attendenceRoute");
 const TeamRoutes = require("./routes/team/teamRoute");
+const payrollRoutes = require("./routes/Payroll/PayrollRoute");
 
 const app = express();
 
@@ -57,7 +58,7 @@ app.use("/api/designation", DesignationRoutes);
 app.use("/api/department", DepartmentRoutes);
 app.use("/api/team", TeamRoutes);
 app.use("/api/tasksgiven", TasksGivenRoutes);
-
+app.use("/api/payroll", payrollRoutes);
 // err handler
 app.use(notFound);
 app.use(errorHandler);
