@@ -37,6 +37,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
     isAdmin: {
       type: Boolean,
       default: false,
@@ -49,7 +53,6 @@ const userSchema = new mongoose.Schema(
       firstName: String,
       lastName: String,
       employerId: String,
-      email: String,
     },
     personalDetails: {
       dateOfBirth: Date,
@@ -57,6 +60,7 @@ const userSchema = new mongoose.Schema(
       age: Number,
       maritalStatus: String,
       aboutMe: String,
+      bloodGroup: String,
     },
     workInformation: {
       Department: String,
@@ -64,7 +68,7 @@ const userSchema = new mongoose.Schema(
       designation: String,
       appRole: String,
       employmentType: String,
-      employeeStatus: String,
+      employeeStatus: { type: String, default: "Active" },
       sourceOfHire: String,
       dateOfJoining: Date,
       currentExperience: String,

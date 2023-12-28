@@ -17,7 +17,6 @@ const sendEmailWithUser = require("../../utils/sendEmailWithUser");
 const {
   backNormalAdminAccessGivenFun,
 } = require("../../utils/restrictBack/restrictedAccessBack");
-const cloudinaryUploadImg = require("../../utils/cloudinary");
 // const Cryptr = require("cryptr");
 
 // const cryptr = new Cryptr(process.env.CRYPTR_KEY);
@@ -28,23 +27,18 @@ const cloudinaryUploadImg = require("../../utils/cloudinary");
 
 const userRegisterCtrl = expressAsyncHandler(async (req, res) => {
   // Business Logic
-  console.log("rigister");
 
   const userExists = await User.findOne({ email: req?.body?.email });
   if (userExists) throw new Error("User already exists");
-  console.log("userExists no");
 
   try {
-    console.log("try start");
     const user = await User.create({
       ...req?.body,
     });
-    console.log("res");
     res.json(user);
 
     // res.json("user controllers");
   } catch (error) {
-    console.log(error);
     res.json(error);
   }
 });
@@ -188,7 +182,6 @@ const fetchUsersCtrl = expressAsyncHandler(async (req, res) => {
 //----------------------------------------------------------------
 
 const fetchUserDetails = expressAsyncHandler(async (req, res) => {
-  console.log(req?.user, "fetch single user details");
   const { id } = req.params;
   validateMongodbID(id);
 
@@ -203,7 +196,6 @@ const fetchUserDetails = expressAsyncHandler(async (req, res) => {
       .populate("userDocuments")
       .populate("attendence")
       .select("-password");
-    console.log(user, "user ======================");
     res.json(user);
   } catch (error) {
     console.log(error);
@@ -232,26 +224,6 @@ const updateUserctrl = expressAsyncHandler(async (req, res) => {
       }
     );
 
-    res.json(user);
-  } catch (error) {
-    res.json(error);
-  }
-});
-
-const updateUserProfileCtrl = expressAsyncHandler(async (req, res) => {
-  console.log("update profile triggered");
-  console.log(req.params.id);
-  const id = req.params.id;
-
-  const localPath = `public/images/profile/${req?.file?.filename}`;
-
-  const imgUploaded = await cloudinaryUploadImg(localPath);
-
-  console.log(imgUploaded);
-  try {
-    const user = await User.findByIdAndUpdate(id, {
-      profilePhoto: imgUploaded?.url,
-    });
     res.json(user);
   } catch (error) {
     res.json(error);
@@ -288,8 +260,6 @@ const newHiresFetchCtrl = expressAsyncHandler(async (req, res) => {
     const currentDate = new Date();
     const newHireCutoff = new Date(); // Define the cutoff date (e.g., 30 days ago)
     newHireCutoff.setDate(newHireCutoff.getDate() - 30);
-    console.log(currentDate, "currentDate date");
-    console.log(newHireCutoff, "newHireCutoff 99999999999999999999");
     const newHires = await User.find({
       // hireDate: { $gte: newHireCutoff, $lte: currentDate },
       "workInformation.dateOfJoining": {
@@ -492,6 +462,14 @@ const changePassword = expressAsyncHandler(async (req, res) => {
 // Send Automated emails
 const sendAutomatedEmail = expressAsyncHandler(async (req, res) => {
   const { subject, send_to, reply_to, template, url } = req.body;
+  console.log(
+    subject,
+    send_to,
+    reply_to,
+    template,
+    url,
+    "2222222222222222222222222"
+  );
 
   if (!subject || !send_to || !reply_to || !template) {
     res.status(500);
@@ -542,13 +520,40 @@ const fetchManagersData = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//----------------------------------------------------------------
+// changeUserActiveInactiveCtrl
+//----------------------------------------------------------------
+const changeUserActiveInactiveCtrl = expressAsyncHandler(async (req, res) => {
+  console.log("ok loginstatus", req?.body?.isActive, req.params);
+  const { id } = req.params;
+  validateMongodbID(id);
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      req?.params?.id,
+      {
+        $set: {
+          "workInformation.employeeStatus":
+            req?.body?.workInformation?.employeeStatus,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    res.json(user);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = {
   loginUserCtrl,
   userRegisterCtrl,
   fetchUsersCtrl,
   fetchUserDetails,
   updateUserctrl,
-  updateUserProfileCtrl,
   deleteProfileCtrl,
   newHiresFetchCtrl,
   forgotPassword,
@@ -559,6 +564,7 @@ module.exports = {
   logoutUser,
   loginStatus,
   setLocalHostUserAuthDetails,
+  changeUserActiveInactiveCtrl,
 };
 
 // const fetchUsersCtrl = expressAsyncHandler(async (req, res) => {
