@@ -31,7 +31,7 @@ const ExitDetailsSchema = new mongoose.Schema(
     Security: String,
     Noticeperiodfollowed: String,
     ManagerSupervisorclearance: String,
-
+    separationStatus: String,
     addedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
