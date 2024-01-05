@@ -22,6 +22,7 @@ const TasksGivenRoutes = require("./routes/TasksGiven/TasksGivenRoute");
 const attendenceRoute = require("./routes/attendence/attendenceRoute");
 const TeamRoutes = require("./routes/team/teamRoute");
 const payrollRoutes = require("./routes/Payroll/PayrollRoute");
+const payrollMonthRoutes = require("./routes/Payroll/PayrollMonth/PayrollMonthRoute");
 
 const app = express();
 
@@ -59,6 +60,7 @@ app.use("/api/department", DepartmentRoutes);
 app.use("/api/team", TeamRoutes);
 app.use("/api/tasksgiven", TasksGivenRoutes);
 app.use("/api/payroll", payrollRoutes);
+app.use("/api/payroll-month", payrollMonthRoutes);
 // err handler
 app.use(notFound);
 app.use(errorHandler);

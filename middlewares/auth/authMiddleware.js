@@ -40,10 +40,6 @@ const User = require("../../model/user/User");
 
 const authMiddleware = expressAsyncHandler(async (req, res, next) => {
   try {
-    console.log(
-      req.cookies,
-      "authmiddleware cookies new token ================================================"
-    );
     const token = req.cookies.token;
     if (!token) {
       res.status(401);
