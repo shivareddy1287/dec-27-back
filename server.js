@@ -10,7 +10,9 @@ const dbConnect = require("./config/db/dbConnect");
 const notificationRoute = require("./routes/notification/notificationRoute");
 const hrLettersRoute = require("./routes/hrLetters/hrLettersRoute");
 
-// routes 2
+// ok
+
+// routes 22
 const userRoutes = require("./routes/users/usersRoute");
 const { errorHandler, notFound } = require("./middlewares/error/errorHandler");
 const assetRoutes = require("./routes/asset/assetRoute");

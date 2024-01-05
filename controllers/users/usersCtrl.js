@@ -17,6 +17,9 @@ const sendEmailWithUser = require("../../utils/sendEmailWithUser");
 const {
   backNormalAdminAccessGivenFun,
 } = require("../../utils/restrictBack/restrictedAccessBack");
+
+const cloudinaryUploadImg = require("../../utils/cloudinary");
+
 // const Cryptr = require("cryptr");
 
 // const cryptr = new Cryptr(process.env.CRYPTR_KEY);
@@ -224,6 +227,29 @@ const updateUserctrl = expressAsyncHandler(async (req, res) => {
       }
     );
 
+    res.json(user);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+const updateUserProfileCtrl = expressAsyncHandler(async (req, res) => {
+  console.log("update profile triggered");
+  console.log(req.params.id);
+  const id = req.params.id;
+
+  console.log("update profile triggered2");
+
+  const localPath = `public/images/profile/${req?.file?.filename}`;
+
+  const imgUploaded = await cloudinaryUploadImg(localPath);
+  console.log("update profile triggered3");
+
+  console.log(imgUploaded);
+  try {
+    const user = await User.findByIdAndUpdate(id, {
+      profilePhoto: imgUploaded?.url,
+    });
     res.json(user);
   } catch (error) {
     res.json(error);
@@ -554,6 +580,7 @@ module.exports = {
   fetchUsersCtrl,
   fetchUserDetails,
   updateUserctrl,
+  updateUserProfileCtrl,
   deleteProfileCtrl,
   newHiresFetchCtrl,
   forgotPassword,

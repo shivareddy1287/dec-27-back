@@ -16,8 +16,14 @@ const {
   loginStatus,
   setLocalHostUserAuthDetails,
   changeUserActiveInactiveCtrl,
+  updateUserProfileCtrl,
 } = require("../../controllers/users/usersCtrl");
 const authMiddleware = require("../../middlewares/auth/authMiddleware");
+
+const {
+  photoUpload,
+  profilePhotoResizing,
+} = require("../../uploads/photoUploads/photoUploads");
 
 const userRoutes = express.Router();
 
@@ -33,6 +39,13 @@ userRoutes.get("/", authMiddleware, fetchUsersCtrl);
 
 userRoutes.get("/:id", authMiddleware, fetchUserDetails);
 userRoutes.put("/update/:id", authMiddleware, updateUserctrl);
+userRoutes.put(
+  "/updateProfile/:id",
+  // authMiddleware
+  photoUpload.single("image"),
+  profilePhotoResizing,
+  updateUserProfileCtrl
+);
 userRoutes.delete("/delete/:id", authMiddleware, deleteProfileCtrl);
 userRoutes.get("/new/hires", authMiddleware, newHiresFetchCtrl);
 userRoutes.post("/forgotPassword", forgotPassword);
