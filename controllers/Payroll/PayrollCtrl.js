@@ -51,6 +51,36 @@ const fetchPayrollsCtrl = expressAsyncHandler(async (req, res) => {
 });
 
 //----------------------------------------------------------------
+// Fetch Payrolls
+//----------------------------------------------------------------
+
+const fetchAllActivePayrollsCtrl = expressAsyncHandler(async (req, res) => {
+  const isAdmin = backNormalAdminAccessGivenFun(req?.user?.Access);
+  const query = req?.query?.id
+    ? { user: req?.query?.id }
+    : isAdmin
+    ? { statusPayroll: "Active" }
+    : { user: req?.user?.id };
+
+  // const query = req?.query?.id
+  // ? { user: req?.query?.id, status: "Active" }
+  // : isAdmin
+  // ? { status: "Active" }
+  // : { user: req?.user?.id, statusPayroll: "Active" };
+
+  try {
+    const payroll = await Payroll.find(query)
+      .populate("user")
+      .populate("addedBy")
+      .populate("ModifiedBy");
+    res.json(payroll);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+//----------------------------------------------------------------
 // user details
 //----------------------------------------------------------------
 
@@ -120,4 +150,5 @@ module.exports = {
   fetchSinglePayroll,
   updatePayrollCtrl,
   deletePayrollCtrl,
+  fetchAllActivePayrollsCtrl,
 };

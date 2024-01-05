@@ -50,7 +50,7 @@ const userRegisterCtrl = expressAsyncHandler(async (req, res) => {
 //----------------------------------------------------------------
 const loginUserCtrl = expressAsyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
 
   const userFound = await User.findOne({ email })
     .populate("addedBy")
@@ -65,7 +65,7 @@ const loginUserCtrl = expressAsyncHandler(async (req, res) => {
   const token = generateToken(userFound?._id);
   if (userFound && (await userFound.isPasswordMatched(password))) {
     // Send HTTP-only cookie
-    console.log(token, "login token");
+    // console.log(token, "login token");
     res.cookie("token", token, {
       path: "/",
       httpOnly: true,
@@ -99,10 +99,10 @@ const loginUserCtrl = expressAsyncHandler(async (req, res) => {
 // Get Login Status
 //----------------------------------------------------------------
 const loginStatus = expressAsyncHandler(async (req, res) => {
-  console.log("ok loginstatus", req.cookies);
+  // console.log("ok loginstatus", req.cookies);
   const token = req.cookies.token;
 
-  console.log(token, "token");
+  // console.log(token, "token");
   if (!token) {
     return res.json(false);
   }
@@ -135,7 +135,7 @@ const setLocalHostUserAuthDetails = expressAsyncHandler(async (req, res) => {
 //----------------------------------------------------------------
 
 const logoutUser = expressAsyncHandler(async (req, res) => {
-  console.log("logout token");
+  // console.log("logout token");
   res.cookie("token", "", {
     path: "/",
     httpOnly: true,
