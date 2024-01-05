@@ -89,13 +89,14 @@ const approveLeaveCtrl = expressAsyncHandler(async (req, res) => {
         { new: true }
       );
       console.log("test user");
+      console.log("get user", leave);
 
       const notificationData = {
-        employeeId: "652fbcabf81731ce317b7d9a",
-        employeeName: "1",
-        notificationTitle: `sd `,
-        notificationDescription: `ads`,
-        user: "652fbcabf81731ce317b7d9a",
+        employeeId: leave.employeeId,
+        employeeName: req.user.basicInformation.firstName,
+        notificationTitle: `Leave Approved `,
+        notificationDescription: `leave approved for the date....`,
+        user: leave.employeeId,
       };
 
       const notification = await Notification.create(notificationData);
