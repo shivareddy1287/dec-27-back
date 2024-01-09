@@ -1,6 +1,15 @@
 const expressAsyncHandler = require("express-async-handler");
 const Attendence = require("../../model/attendence/attendence");
 
+const fetchattendencesCtrl = expressAsyncHandler(async (req, res) => {
+  try {
+    const attendence = await Attendence.find({}).populate("user");
+    res.json(attendence);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 const attendenceCheckInCtrl = expressAsyncHandler(async (req, res) => {
   console.log(req.body);
   const userId = req.user;
@@ -26,4 +35,8 @@ const attendenceCheckOutCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { attendenceCheckInCtrl, attendenceCheckOutCtrl };
+module.exports = {
+  fetchattendencesCtrl,
+  attendenceCheckInCtrl,
+  attendenceCheckOutCtrl,
+};

@@ -30,7 +30,7 @@ const hrLettersPdfCtrl = expressAsyncHandler(async (req, res) => {
 });
 
 const addUserDocumentsCtrl = expressAsyncHandler(async (req, res) => {
-  console.log("body", req.body.employeeId);
+  console.log("body", req.body.docType);
   console.log(req.body);
   console.log(req.file.buffer);
 
@@ -38,6 +38,7 @@ const addUserDocumentsCtrl = expressAsyncHandler(async (req, res) => {
     const userDoc = await UserDocuments.create({
       employeeId: req.body.employeeId,
       user: req.body.employeeId,
+      docType: req.body.docType,
       documentName: req.body.documentName,
       document: req.file.buffer,
     });

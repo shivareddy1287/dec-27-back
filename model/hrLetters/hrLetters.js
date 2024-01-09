@@ -6,6 +6,9 @@ const userDocumentsSchema = new mongoose.Schema(
       type: String,
       // required: [true, "Employee Id is required"],
     },
+    docType: {
+      type: String,
+    },
     documentName: {
       type: String,
     },
